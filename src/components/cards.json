@@ -1,0 +1,19 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "vocab": "test",
+      "definition": "test ans"
+    },
+    {
+      "id": 2,
+      "vocab": "test2",
+      "definition": "test2 ans"
+    },
+    {
+      "id": 3,
+      "vocab": "test3",
+      "definition": "test3ans"
+    }
+  ]
+}

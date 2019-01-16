@@ -8,7 +8,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Row, Button, Col, Container, Modal, ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 import Reminder from './Reminder'
 import MyForm from './Form'
+import firebase from "firebase";
 
+//setting up firebase
+  var config = {
+    apiKey: "AIzaSyCyodghAcVUIbW6NC6hBaOghQVml3RLIKs",
+    authDomain: "memory-helper-de33b.firebaseapp.com",
+    databaseURL: "https://memory-helper-de33b.firebaseio.com",
+    projectId: "memory-helper-de33b",
+    storageBucket: "memory-helper-de33b.appspot.com",
+    messagingSenderId: "482145597160"
+  };
+  firebase.initializeApp(config);
+  
 
 class App extends Component {
   constructor(props){
@@ -20,6 +32,19 @@ class App extends Component {
       modal: false
     };
     this.toggle = this.toggle.bind(this);
+  }
+
+
+
+  addCard(){
+    var  db = firebase.database().ref();
+    console.log("Writing to Database")
+    db.push({
+      id: 5,
+      vocab: "addtest",
+      definition: "addtest ans"
+    });
+  
   }
 
   notify = () => toast("Wow so easy !");
@@ -82,6 +107,9 @@ class App extends Component {
         </Button>
       );
     }
+
+    
+  
   }
 
   renderReminders() {
@@ -158,7 +186,7 @@ class App extends Component {
                   <MyForm />
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={this.toggle}>Confirm</Button>{' '}
+                  <Button color="primary" onClick={() => {this.toggle(); this.addCard()}}>Confirm</Button>{' '}
                   <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                 </ModalFooter>
               </Modal>
@@ -186,5 +214,8 @@ function mapStateToProps(state) {
     reminders: state
   };
 }
+
+
+
 
 export default connect(mapStateToProps, {addReminder, deleteReminder, deleteAllReminders})(App);
