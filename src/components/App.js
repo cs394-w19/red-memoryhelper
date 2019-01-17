@@ -9,6 +9,7 @@ import { Row, Button, Col, Container, Modal, ModalHeader, ModalFooter, ModalBody
 import Reminder from './Reminder'
 import MyForm from './Form'
 import firebase from "firebase";
+import './card.css';
 
 //setting up firebase
   var config = {
@@ -32,20 +33,36 @@ class App extends Component {
       modal: false
     };
     this.toggle = this.toggle.bind(this);
+    this.count = 0;
   }
 
 
-
+//Adds card data to database
   addCard(){
-    var  db = firebase.database().ref();
-    console.log("Writing to Database")
+    var  db = firebase.database().ref("Cards/");
     db.push({
-      id: 5,
-      vocab: "addtest",
-      definition: "addtest ans"
+      id: this.count,
+      vocab: document.getElementById("Vocab").value,
+      definition: document.getElementById("Definition").value
     });
+
+    this.count += 1; 
   
   }
+
+  //grabs a random card from database
+  //right now just draws a specific card
+  drawCard(){
+   var db = firebase.database().ref();
+
+    db.on("value", function(snapshot) {
+       console.log(snapshot.child("vocab").val());
+    }, function (error) {
+       console.log("Error: " + error.code);
+    });
+  }
+
+
 
   notify = () => toast("Wow so easy !");
   //
@@ -131,6 +148,22 @@ class App extends Component {
     );
   }
 
+  renderCards(){
+    return(
+      <div className="card-container">
+    <div className="card">
+      <div className="front">
+        <div className="vocab">this.drawCard().vocab</div>
+      </div>
+      <div className="back">
+        <div className="definition">this.drawCard.definition</div>
+      </div>
+    </div>
+  </div>
+
+    )
+  }
+
   render() {
 
 
@@ -199,6 +232,7 @@ class App extends Component {
         </div>
         {this.renderReminders()}
         {this.renderClearButton()}
+        {this.renderCards()}
         </div>
       </div>
     );
