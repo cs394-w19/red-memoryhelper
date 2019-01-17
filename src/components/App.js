@@ -11,6 +11,7 @@ import MyForm from './Form'
 import firebase from "firebase";
 import './card.css';
 
+
 //setting up firebase
   var config = {
     apiKey: "AIzaSyCyodghAcVUIbW6NC6hBaOghQVml3RLIKs",
@@ -50,18 +51,31 @@ class App extends Component {
   
   }
 
-  //grabs a random card from database
+  
+  //grabs a random card's Vocab Value from database
   //right now just draws a specific card
   drawCard(){
-   var db = firebase.database().ref();
+  
+  const rand = Math.floor(Math.random() * (this.count - 0 + 1)) + 0;
+   var db = firebase.database().ref("Cards/");
 
-    db.on("value", function(snapshot) {
-       console.log(snapshot.child("vocab").val());
-    }, function (error) {
-       console.log("Error: " + error.code);
+   db.on("value", function(snapshot) {
+   var myCard = snapshot.val().vocab;
+   console.log(myCard);
+   // console.log("count is")
+   // console.log(this.count)
+   // console.log("rand id is");
+   // console.log(rand);
+   // console.log("name: " + newPlayer.name);
+   // console.log("age: " + newPlayer.age);
+   // console.log("number: " + newPlayer.number);
+   // console.log("Previous Player: " + prevChildKey);
     });
   }
 
+  drawCardBack(){
+
+  }
 
 
   notify = () => toast("Wow so easy !");
@@ -150,17 +164,20 @@ class App extends Component {
 
   renderCards(){
     return(
+    <div>
       <div className="card-container">
-    <div className="card">
-      <div className="front">
-        <div className="vocab">this.drawCard().vocab</div>
+        <div className="card">
+          <div className="front">
+            <div className="vocab">Vocab</div>
+          </div>
+          <div className="back">
+            <div className="definition">Definition</div>
+          </div>
+        </div>
       </div>
-      <div className="back">
-        <div className="definition">this.drawCard.definition</div>
-      </div>
-    </div>
-  </div>
 
+     <Button onClick={this.drawCard}> Draw Card </Button>
+    </div>
     )
   }
 
